@@ -10,8 +10,8 @@ std::vector<std::string> getColorMap() {
     std::vector<std::string> colorMap;
     for(i = 0; i < 5; i++) {
         for(j = 0; j < 5; j++) {
-            std::string line = std::to_string(i * 5 + j) + " | " + majorColor[i] + " | " + minorColor[i] + "\n";
-            return colorMap;
+            std::string line = std::to_string(i * 5 + j) + " | " + majorColor[i] + " | " + minorColor[i] + "\n";  
+            colorMap.push_back(line);
         }
     }
     return colorMap;
@@ -35,3 +35,4 @@ void testPrintColorMap() {
     assert(colorMap[5] == "5 | Red | Blue");
 
 }
+
