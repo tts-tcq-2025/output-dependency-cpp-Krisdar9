@@ -36,6 +36,42 @@ namespace WeatherSpace
             return 52;
         }
     };
+    /// Test Case 1: It should mention rain but currently returns "Sunny Day"
+    class HighPrecipLowWindStub : public IWeatherSensor {
+        int Humidity() const override {
+        return 60;
+        }
+
+        int Precipitation() const override {
+        return 80; // High precipitation
+        }
+
+        double TemperatureInC() const override {
+        return 22; // Cool day
+        }
+
+        int WindSpeedKMPH() const override {
+        return 30; // Calm wind
+        }
+    };
+    /// Test Case 2: Stormy with high precipitation and high wind
+    class HighPrecipHighWindStub : public IWeatherSensor {
+        int Humidity() const override {
+        return 60;
+        }
+
+        int Precipitation() const override {
+        return 80; // High precipitation
+        }
+
+        double TemperatureInC() const override {
+        return 27; // Cool day
+        }
+
+        int WindSpeedKMPH() const override {
+        return 30; // Calm wind
+        }
+    };
     string Report(const IWeatherSensor& sensor)
     {
         int precipitation = sensor.Precipitation();
@@ -54,7 +90,7 @@ namespace WeatherSpace
     
     void TestRainy()
     {
-        SensorStub sensor;
+        HighPrecipLowWindStub sensor;
         string report = Report(sensor);
         cout << report << endl;
         assert(report.find("rain") != string::npos);
@@ -64,7 +100,7 @@ namespace WeatherSpace
     {
         // This instance of stub needs to be different-
         // to give high precipitation (>60) and low wind-speed (<50)
-        SensorStub sensor;
+        HighPrecipHighWindStub sensor;
 
         // strengthen the assert to expose the bug
         // (function returns Sunny day, it should predict rain)
