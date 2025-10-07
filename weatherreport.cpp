@@ -36,6 +36,14 @@ namespace WeatherSpace
             return 52;
         }
     };
+
+    class HeavyRainStub : public IWeatherSensor {
+        int Humidity() const override { return 85; }
+        int Precipitation() const override { return 70; }   // High rain
+        double TemperatureInC() const override { return 26; }
+        int WindSpeedKMPH() const override { return 30; }   // Low wind
+    };
+
     string Report(const IWeatherSensor& sensor)
     {
         int precipitation = sensor.Precipitation();
