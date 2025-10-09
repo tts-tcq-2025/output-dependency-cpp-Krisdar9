@@ -37,18 +37,17 @@ namespace WeatherSpace
         }
     };
 
-    class HeavyRainStub : public IWeatherSensor {
-        int Humidity() const override { return 85; }
-        int Precipitation() const override { return 70; }   // High rain
-        double TemperatureInC() const override { return 26; }
-        int WindSpeedKMPH() const override { return 30; }   // Low wind
+    class HighPrecipLowWindStub : public IWeatherSensor {
+    int Humidity() const override { return 90; }
+    int Precipitation() const override { return 75; }   // High precipitation
+    double TemperatureInC() const override { return 27; } // > 25 to enter condition
+    int WindSpeedKMPH() const override { return 40; }   // Low wind speed (<50)
     };
 
     string Report(const IWeatherSensor& sensor)
     {
-        int precipitation = sensor.Precipitation();
-        // precipitation < 20 is a sunny day
-        string report = "Sunny Day";
+        int precipitation = sensor.Precipitation();       
+        string report = "Sunny Day";    // precipitation < 20 is a sunny day
 
         if (sensor.TemperatureInC() > 25)
         {
@@ -73,11 +72,17 @@ namespace WeatherSpace
         // This instance of stub needs to be different-
         // to give high precipitation (>60) and low wind-speed (<50)
         SensorStub sensor;
-
         // strengthen the assert to expose the bug
         // (function returns Sunny day, it should predict rain)
         string report = Report(sensor);
         assert(report.length() > 0);
+    }
+
+    void TestHighPrecipLowWind() {
+        HighPrecipLowWindStub sensor;
+        string report = Report(sensor);
+        cout << report << endl;        
+        assert(report.find("rain") != string::npos);   // This should NOT be "Sunny Day" because rain is high
     }
 }
 
@@ -85,5 +90,6 @@ void testWeatherReport() {
     cout << "\nWeather report test\n";
     WeatherSpace::TestRainy();
     WeatherSpace::TestHighPrecipitation();
+    WeatherSpace::TestHighPrecipLowWind();
     cout << "All is well (maybe)\n";
 }
